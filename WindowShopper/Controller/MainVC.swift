@@ -10,6 +10,8 @@ import UIKit
 
 class MainVC: UIViewController {
 
+    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var hoursLabel: UILabel!
     @IBOutlet weak var wageLabel: CurrencyTextField!
     @IBOutlet weak var itemPriceLabel: CurrencyTextField!
    
@@ -28,11 +30,34 @@ class MainVC: UIViewController {
         wageLabel.inputAccessoryView = calculateButton
         itemPriceLabel.inputAccessoryView = calculateButton
         
+        resultLabel.isHidden = true
+        hoursLabel.isHidden = true
+        
     }
     
     @objc func calculate() {
-        print("we got here!")
+        
+        // if text fields has data (not nil), then store that data into new variables
+        if let wageText = wageLabel.text, let priceText = itemPriceLabel.text {
+            
+            //Casting string into the double
+            if let wage = Double(wageText), let price = Double(priceText) {
+                view.endEditing(true)
+                resultLabel.isHidden = false
+                hoursLabel.isHidden = false
+                resultLabel.text = "\(Wage.getHours(forWage: wage, andPrice: price))"
+            }
+            
+        }
     }
-
+    
+    @IBAction func clearButtonPressed(_ sender: Any) {
+        resultLabel.isHidden = true
+        hoursLabel.isHidden = true
+        wageLabel.text = ""
+        itemPriceLabel.text = ""
+        
+    }
+    
 }
 
